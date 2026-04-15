@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE struts PUBLIC 
+"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+"http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+  <package name="user"  extends="struts-default">
+    
+  
+    <action name="inicio">
+      <result>pages/registroTrabajador.jsp</result>   
+    </action>
+    
+     <action name="RegistroNuevoCero" class="action.TrabajadorAction"  method="ingresarCero" >
+        <result name= "exito">pages/registroTrabajador.jsp</result>
+        <result name= "error">pages/registroTrabajador.jsp</result>
+         <result name= "SESION">pages/login.jsp</result>
+    </action>
+    
+    <action name="RegistroNuevo" class="action.TrabajadorAction"  method="ingresar" >
+        <result name= "exito">pages/registroTrabajador.jsp</result>
+        <result name= "error">pages/registroTrabajador.jsp</result>
+         <result name= "SESION">pages/login.jsp</result>
+    </action>
+    
+     <action name="RegistroConsulta" class="action.TrabajadorAction"  method="listaTotal" >
+        <result name= "exito">pages/verConsulta.jsp</result>
+        <result name= "error">pages/error.jsp</result>
+    </action>
+    
+     <action name="RegistroConsultaString" class="action.TrabajadorAction"  method="buscaRegistro" >
+        <result name= "exito">pages/exito.jsp</result>
+        <result name= "error">pages/error.jsp</result>
+    </action>
+    
+    <action name="RegistroModifica" class="action.TrabajadorAction"  method="modificaRegistro" >
+        <result name= "exito">pages/exito.jsp</result>
+        <result name= "error">pages/error.jsp</result>
+    </action>
+    
+     <action name="RegistroElimina" class="action.TrabajadorAction"  method="eliminaRegistro" >
+        <result name= "exito">pages/exito.jsp</result>
+        <result name= "error">pages/error.jsp</result>
+    </action>
+    
+    <!-- usuario verifica -->
+     <action name="acccesoUser" class="action.acessoAction"  method="verificaUsuario" >
+        <result name= "barra">pages/principal.jsp</result>
+        <result name= "error">pages/error.jsp</result>
+        <result name= "noAccess">pages/noAccess.jsp</result>       
+    </action>
+    
+    <action name="inventarioReactivos" class="action.InventarioReactivosAction" method="verInventario">
+        <result name="success">pages/inventarioReactivos.jsp</result>
+    </action>
+
+	<!--  CERRAR SESION  -->
+	<action name="closeAction" class="action.acessoAction" method="cerrar">
+		<result name="SUCCESS">pages/login.jsp</result>
+		<result name="input">pages/login.jsp</result>
+	</action>
+
+  </package>
+</struts>
+
+

@@ -1,0 +1,32 @@
+[
+  {
+    "id_reactivo": "R001",
+    "nombre": "Ácido clorhídrico",
+    "cantidad_total": 12,
+    "cantidad_consumida": 4
+  },
+  {
+    "id_reactivo": "R002",
+    "nombre": "Sulfato de cobre",
+    "cantidad_total": 10,
+    "cantidad_consumida": 7
+  },
+  {
+    "id_reactivo": "R003",
+    "nombre": "Alcohol etílico",
+    "cantidad_total": 20,
+    "cantidad_consumida": 9
+  },
+  {
+    "id_reactivo": "R004",
+    "nombre": "Peróxido de hidrógeno",
+    "cantidad_total": 8,
+    "cantidad_consumida": 6
+  },
+  {
+    "id_reactivo": "R005",
+    "nombre": "Cloruro de sodio",
+    "cantidad_total": 15,
+    "cantidad_consumida": 12
+  }
+]
