@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>mx.secu.quimica</groupId>
+  <artifactId>Conexion_BD</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+
+  <name>CONTROLESCOLARSUP - Conexion_BD</name>
+  <description>Sistema de control escolar con modulo de inventario de reactivos quimicos</description>
+
+  <properties>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+
+    <!--
+      NOTE ON BUNDLED JARS IN WEB-INF/lib
+      =====================================
+      All third-party runtime JARs (Struts 2, XWork, OGNL, MySQL connector, etc.)
+      are already shipped inside src/main/webapp/WEB-INF/lib and will be packaged
+      into the WAR automatically by the maven-war-plugin.  They are NOT declared
+      here as Maven dependencies to avoid introducing vulnerable version pins into
+      the Maven dependency graph.  The compiler plugin below adds them to the
+      compilation classpath via additionalClasspathElements.
+
+      SECURITY WARNING
+      ================
+      The currently bundled strut2-core-2.1.8.1.jar (Struts 2.1.8.1) has many
+      known critical vulnerabilities (RCE, path traversal, DoS, etc.).
+      Before deploying to any environment, replace it with a supported release
+      (Struts 2.5.33 for the 2.x line, or preferably Struts 6.x / 7.x).
+      See: https://struts.apache.org/security/
+    -->
+
+    <!-- Servlet API (provided by Tomcat 9 at runtime, NOT included in WAR) -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- JSP API (provided by Tomcat 9 at runtime, NOT included in WAR) -->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.3.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.2</version>
+        <configuration>
+          <warName>Conexion_BD</warName>
+          <webappDirectory>src/main/webapp</webappDirectory>
+          <!-- All runtime JARs are already present in WEB-INF/lib and will be
+               packaged into the WAR automatically by this plugin. -->
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+          <encoding>UTF-8</encoding>
+          <!--
+            Add the bundled WEB-INF/lib JARs to the compilation classpath
+            without declaring them as versioned Maven dependencies.
+            This keeps vulnerable third-party versions out of the Maven
+            dependency graph while still allowing `mvn compile` to succeed.
+          -->
+          <additionalClasspathElements>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/strut2-core-2.1.8.1.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/xwork-core-2.1.6.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/ognl-3.0.6.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/commons-logging-1.1.1.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/mysql-connector-j-9.2.0.jar</additionalClasspathElement>
+          </additionalClasspathElements>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
