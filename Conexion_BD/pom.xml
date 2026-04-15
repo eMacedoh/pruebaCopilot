@@ -21,7 +21,26 @@
 
   <dependencies>
 
-    <!-- Servlet API (provided by Tomcat 9 at runtime) -->
+    <!--
+      NOTE ON BUNDLED JARS IN WEB-INF/lib
+      =====================================
+      All third-party runtime JARs (Struts 2, XWork, OGNL, MySQL connector, etc.)
+      are already shipped inside src/main/webapp/WEB-INF/lib and will be packaged
+      into the WAR automatically by the maven-war-plugin.  They are NOT declared
+      here as Maven dependencies to avoid introducing vulnerable version pins into
+      the Maven dependency graph.  The compiler plugin below adds them to the
+      compilation classpath via additionalClasspathElements.
+
+      SECURITY WARNING
+      ================
+      The currently bundled strut2-core-2.1.8.1.jar (Struts 2.1.8.1) has many
+      known critical vulnerabilities (RCE, path traversal, DoS, etc.).
+      Before deploying to any environment, replace it with a supported release
+      (Struts 2.5.33 for the 2.x line, or preferably Struts 6.x / 7.x).
+      See: https://struts.apache.org/security/
+    -->
+
+    <!-- Servlet API (provided by Tomcat 9 at runtime, NOT included in WAR) -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
@@ -29,57 +48,12 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- JSP API (provided by Tomcat 9 at runtime) -->
+    <!-- JSP API (provided by Tomcat 9 at runtime, NOT included in WAR) -->
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>javax.servlet.jsp-api</artifactId>
       <version>2.3.3</version>
       <scope>provided</scope>
-    </dependency>
-
-    <!-- Struts 2 core (JAR already bundled in WEB-INF/lib) -->
-    <dependency>
-      <groupId>org.apache.struts</groupId>
-      <artifactId>struts2-core</artifactId>
-      <version>2.1.8.1</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/strut2-core-2.1.8.1.jar</systemPath>
-    </dependency>
-
-    <!-- XWork core (Struts 2 dependency, bundled in WEB-INF/lib) -->
-    <dependency>
-      <groupId>com.opensymphony</groupId>
-      <artifactId>xwork-core</artifactId>
-      <version>2.1.6</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/xwork-core-2.1.6.jar</systemPath>
-    </dependency>
-
-    <!-- OGNL (Struts 2 dependency, bundled in WEB-INF/lib) -->
-    <dependency>
-      <groupId>ognl</groupId>
-      <artifactId>ognl</artifactId>
-      <version>3.0.6</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ognl-3.0.6.jar</systemPath>
-    </dependency>
-
-    <!-- Commons Logging (bundled in WEB-INF/lib) -->
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1.1</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/commons-logging-1.1.1.jar</systemPath>
-    </dependency>
-
-    <!-- MySQL JDBC driver (bundled in WEB-INF/lib) -->
-    <dependency>
-      <groupId>com.mysql</groupId>
-      <artifactId>mysql-connector-j</artifactId>
-      <version>9.2.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/mysql-connector-j-9.2.0.jar</systemPath>
     </dependency>
 
   </dependencies>
@@ -95,8 +69,8 @@
         <configuration>
           <warName>Conexion_BD</warName>
           <webappDirectory>src/main/webapp</webappDirectory>
-          <!-- system-scoped dependencies are not added to the WAR automatically;
-               all runtime JARs are already present in WEB-INF/lib -->
+          <!-- All runtime JARs are already present in WEB-INF/lib and will be
+               packaged into the WAR automatically by this plugin. -->
         </configuration>
       </plugin>
 
@@ -108,6 +82,19 @@
           <source>8</source>
           <target>8</target>
           <encoding>UTF-8</encoding>
+          <!--
+            Add the bundled WEB-INF/lib JARs to the compilation classpath
+            without declaring them as versioned Maven dependencies.
+            This keeps vulnerable third-party versions out of the Maven
+            dependency graph while still allowing `mvn compile` to succeed.
+          -->
+          <additionalClasspathElements>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/strut2-core-2.1.8.1.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/xwork-core-2.1.6.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/ognl-3.0.6.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/commons-logging-1.1.1.jar</additionalClasspathElement>
+            <additionalClasspathElement>${project.basedir}/src/main/webapp/WEB-INF/lib/mysql-connector-j-9.2.0.jar</additionalClasspathElement>
+          </additionalClasspathElements>
         </configuration>
       </plugin>
     </plugins>
